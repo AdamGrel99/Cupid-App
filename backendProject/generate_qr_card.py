@@ -1,0 +1,56 @@
+import reportlab.lib.colors as colors
+import reportlab.lib.units as units
+from reportlab.pdfgen.canvas import Canvas
+from reportlab.graphics import renderPM
+import segno
+import PIL.Image
+from reportlab.lib.utils import ImageReader
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
+def generateQRCard():
+    # todo: change these later to get stuff from frontend
+    event_name = "Wesele"
+    event_date = "23.12.2035"
+    man_name = "Waldemar"
+    woman_name = "Anastazja"
+    fin_text = u"Zrób zdjęcia do albumu weselnego!"
+
+    canvas = Canvas("ulotka.pdf")
+
+    canvas.setFillColor(colors.wheat)
+    canvas.rect(0,0,210*units.mm, 297*units.mm,fill=1)
+
+    canvas.setFont("Imperial", 100)
+    canvas.setFillColor(colors.orange)
+    canvas.drawCentredString(210/2*units.mm, 270*units.mm, event_name)
+
+    canvas.setFontSize(80)
+    canvas.drawCentredString(210/2*units.mm, 240*units.mm, event_date)
+
+    canvas.setFontSize(70)
+    canvas.drawCentredString(210/2*units.mm, 210*units.mm, man_name + " & " + woman_name)
+
+    canvas.setFontSize(50)
+    canvas.drawCentredString(210/2*units.mm, 190*units.mm, fin_text)
+
+    qrcode = segno.make_qr("www.cupid.pl/rob_zdjecia?id=5834728423")
+    qrcode.save("qrcode.png")
+
+    qrcode = ImageReader("qrcode.png")
+
+    canvas.drawImage(qrcode, 210/2*units.mm - 15/2*units.cm, 20*units.mm, 150*units.mm, 150*units.mm)
+
+    canvas.setFontSize(32)
+    canvas.setFillColor(colors.black)
+    canvas.drawCentredString(210/2*units.mm, 10*units.mm, "www.cupid.pl")
+
+    canvas.save()
+
+
+
+if __name__ == "__main__":
+    pdfmetrics.registerFont(TTFont('Imperial', 'ImperialScript-Regular.ttf'))
+    print("a")
+    generateQRCard()
+
