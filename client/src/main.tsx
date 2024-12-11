@@ -10,6 +10,7 @@ import RegisterPage from "./pages/RegisterPage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import EditPage from "./pages/Guest/EditPage.tsx";
 import FotoPage from "./pages/Guest/FotoPage.tsx";
+import CardQrPage from "./pages/CardQrPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: "/foto",
     element: <FotoPage />,
+  },
+  {
+    path: "/cardqr",
+    element: <CardQrPage />,
   },
 ]);
 

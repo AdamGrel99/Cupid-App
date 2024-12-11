@@ -8,12 +8,15 @@ from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
-def generateQRCard():
+pdfmetrics.registerFont(TTFont('Imperial', 'ImperialScript-Regular.ttf'))
+def getCalled(data):
+    generateQRCard("Wesele", data["date"], data["manName"], data["womanName"], data["token"])
+def generateQRCard(event_name, event_date, man_name, woman_name, token):
     # todo: change these later to get stuff from frontend
-    event_name = "Wesele"
-    event_date = "23.12.2035"
-    man_name = "Waldemar"
-    woman_name = "Anastazja"
+    # event_name = "Wesele"
+    # event_date = "23.12.2035"
+    # man_name = "Waldemar"
+    # woman_name = "Anastazja"
     fin_text = u"Zrób zdjęcia do albumu weselnego!"
 
     canvas = Canvas("ulotka.pdf")
@@ -49,8 +52,7 @@ def generateQRCard():
 
 
 
-if __name__ == "__main__":
-    pdfmetrics.registerFont(TTFont('Imperial', 'ImperialScript-Regular.ttf'))
-    print("a")
-    generateQRCard()
+# if __name__ == "__main__":
+#     print("a")
+#     generateQRCard()
 
