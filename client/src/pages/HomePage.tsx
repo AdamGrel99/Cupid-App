@@ -13,7 +13,7 @@ function HomePage() {
             Logowanie
           </Link>
           <Link
-            to="/login"
+            to="/register"
             className="text-lg px-6 py-2 bg-white text-pink-600 rounded-lg shadow-md hover:bg-pink-200 mx-2"
           >
             Rejestracja
