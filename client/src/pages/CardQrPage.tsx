@@ -1,14 +1,23 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useSearchParams } from "react-router-dom";
 import { QrData } from "../models/QrData";
 
 function CardQrPage() {
   const [formData, setFormData] = useState<QrData>({
-  token: "53423342",
-  date: "",
-  manName: "",
-  womanName: "",
+    token: "53423342",
+    date: "",
+    manName: "",
+    womanName: "",
   });
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  var tokenFromUrl = searchParams.get("token")
+  useEffect(() => {
+    if (tokenFromUrl) {
+      setFormData((prev) => ({ ...prev, token: tokenFromUrl as string }));
+      console.log("Token zaktualizowany w formData:", tokenFromUrl);
+    }
+  }, [tokenFromUrl]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -19,23 +28,24 @@ function CardQrPage() {
     e.preventDefault();
     console.log("Rejestracja:", formData);
 
+    setFormData((prev: QrData) => ({ ...prev, token: tokenFromUrl as string }));
 
     const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData)
-};
-fetch('http://127.0.0.1:5000/api/generate_qr_card', requestOptions)
-    .then(response => {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    };
+    fetch('http://192.168.100.12:5000/api/generate_qr_card', requestOptions)
+      .then(response => {
         if (!response.ok) {
-            throw new Error("Błąd podczas żądania: " + response.status);
+          throw new Error("Błąd podczas żądania: " + response.status);
         }
         return response.json();
-    })
-    .then(data => {
+      })
+      .then(data => {
         console.log("Lokacja: ", data.location); // Pobiera location z odpowiedzi
-    })
-    .catch(error => console.error("Błąd: ", error));
+      })
+      .catch(error => console.error("Błąd: ", error));
 
     // Wyślij dane do API rejestracji
   };

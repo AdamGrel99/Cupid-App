@@ -7,10 +7,13 @@ import PIL.Image
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+import os
 
 pdfmetrics.registerFont(TTFont('Imperial', 'ImperialScript-Regular.ttf'))
+
 def getCalled(data):
     generateQRCard("Wesele", data["date"], data["manName"], data["womanName"], data["token"])
+    
 def generateQRCard(event_name, event_date, man_name, woman_name, token):
     # todo: change these later to get stuff from frontend
     # event_name = "Wesele"
@@ -19,7 +22,7 @@ def generateQRCard(event_name, event_date, man_name, woman_name, token):
     # woman_name = "Anastazja"
     fin_text = u"Zrób zdjęcia do albumu weselnego!"
 
-    canvas = Canvas("ulotka.pdf")
+    canvas = Canvas(f"{token}/ulotka.pdf")
 
     canvas.setFillColor(colors.wheat)
     canvas.rect(0,0,210*units.mm, 297*units.mm,fill=1)
@@ -37,10 +40,14 @@ def generateQRCard(event_name, event_date, man_name, woman_name, token):
     canvas.setFontSize(50)
     canvas.drawCentredString(210/2*units.mm, 190*units.mm, fin_text)
 
-    qrcode = segno.make_qr("www.cupid.pl/rob_zdjecia?id=5834728423")
-    qrcode.save("qrcode.png")
+    qrcode = segno.make_qr(f"localhost:5137/foto?token={token}")
+    
+    if not os.path.exists(f"{token}/"):
+        os.makedirs(token)
+        
+    qrcode.save(f"{token}/qrcode.png")
 
-    qrcode = ImageReader("qrcode.png")
+    qrcode = ImageReader(f"{token}/qrcode.png")
 
     canvas.drawImage(qrcode, 210/2*units.mm - 15/2*units.cm, 20*units.mm, 150*units.mm, 150*units.mm)
 

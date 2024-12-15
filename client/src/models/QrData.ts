@@ -1,4 +1,4 @@
-export interface User {
+export interface QrData {
   token: string;
   date: string;
   manName: string;
