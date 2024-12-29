@@ -3,9 +3,10 @@ from flask_cors import CORS
 import json
 import generate_qr_card
 import receive_photo
+import generowanieTokenu
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173", "http://192.168.100.2:5173", "http://192.168.100.6:5173", "http://192.168.100.12:5173"]}})
+cors = CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173", "http://192.168.10.102:5173", "http://192.168.10.102::5173", "http://192.168.10.102::5173"]}})
 
 # CORS(app)
 
@@ -16,7 +17,7 @@ def create_card():
     #     return jsonify({'error': 'Invalid employee properties.'}), 400
 
     generate_qr_card.getCalled(card_data)
-
+    #TODO
     token = card_data["token"]
 
     return jsonify({'location': f'/{token}/ulotka.pdf'}), 201

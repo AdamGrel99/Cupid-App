@@ -51,7 +51,7 @@ function FotoPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(photoData)
     };
-    fetch('http://192.168.100.12:5000/api/send_photo', requestOptions)
+    fetch('http://192.168.10.102:5000/api/send_photo', requestOptions)
       .then(response => {
         if (!response.ok) {
           throw new Error("Błąd podczas żądania: " + response.status);

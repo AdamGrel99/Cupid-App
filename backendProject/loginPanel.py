@@ -5,6 +5,15 @@ import os
 # Plik, w którym będą przechowywane dane użytkowników
 USER_FILE = "users.json"
 
+class Osoba:
+    def __init__(self, imie, wiek, miasto):
+        self.imie = imie
+        self.wiek = wiek
+        self.miasto = miasto
+
+    def to_json(self):
+        return json.dumps(self.__dict__, ensure_ascii=False)
+
 
 def load_users():
     """Wczytuje dane użytkowników z pliku. Tworzy plik, jeśli nie istnieje."""
@@ -14,8 +23,9 @@ def load_users():
     with open(USER_FILE, "r") as file:
         return json.load(file)
 
-
+@app.route('/api/account/login', methods=['POST'])
 def save_users(users):
+    respone(data)
     """Zapisuje dane użytkowników do pliku."""
     with open(USER_FILE, "w") as file:
         json.dump(users, file, indent=4)
@@ -39,7 +49,7 @@ def register(username, password):
     print("Rejestracja zakończona sukcesem!")
     return True
 
-
+@app.route('/api/account/login', methods=['GET'])
 def login(username, password):
     """Loguje użytkownika, jeśli dane są poprawne."""
     users = load_users()
