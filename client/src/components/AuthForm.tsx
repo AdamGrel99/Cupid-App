@@ -18,9 +18,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
   footerLink,
   footerLinkText,
 }) => (
-  <div className="flex items-center justify-center min-h-screen bg-gray-100">
-    <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-bold text-center">{title}</h2>
+  <div className="flex items-center justify-center bg-gray-100">
+    <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-2xl rounded-md">
+      <h2 className="text-2xl font-bold text-center lg:px-24">{title}</h2>
       <form onSubmit={onSubmit} className="space-y-4">
         {children}
         <button
@@ -32,7 +32,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
       </form>
       <div className="text-sm text-center">
         {footerText}{" "}
-        <NavLink to={footerLink} className="text-blue-500 hover:underline">
+        <NavLink to={footerLink} className="text-blue-500 hover: pt-2 ">
           {footerLinkText}
         </NavLink>
       </div>

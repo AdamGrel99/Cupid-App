@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AuthForm from "../components/AuthForm";
 import FormInput from "../components/FormInput";
 import { User } from "../models/User";
+import BackgroundWithCupids from "../components/HomePage/BackgroundWithCupids";
 
 function LoginPage() {
   const [formData, setFormData] = useState<User>({
@@ -22,32 +23,35 @@ function LoginPage() {
   };
 
   return (
-    <AuthForm
-      title="Logowanie"
-      onSubmit={handleSubmit}
-      footerText="Nie masz konta?"
-      footerLink="/register"
-      footerLinkText="Zarejestruj się"
-    >
-      <FormInput
-        id="email"
-        name="email"
-        type="email"
-        label="E-mail"
-        value={formData.email}
-        onChange={handleInputChange}
-        placeholder="Wpisz swój e-mail"
-      />
-      <FormInput
-        id="password"
-        name="password"
-        type="password"
-        label="Hasło"
-        value={formData.password}
-        onChange={handleInputChange}
-        placeholder="Wpisz swoje hasło"
-      />
-    </AuthForm>
+    <header className="w-full flex flex-col items-center justify-center h-screen bg-gradient-to-r from-purple-500 to-pink-500">
+      <BackgroundWithCupids />
+      <AuthForm
+        title="Logowanie"
+        onSubmit={handleSubmit}
+        footerText="Nie masz konta?"
+        footerLink="/register"
+        footerLinkText="Zarejestruj się"
+      >
+        <FormInput
+          id="email"
+          name="email"
+          type="email"
+          label="E-mail"
+          value={formData.email}
+          onChange={handleInputChange}
+          placeholder="Wpisz swój e-mail"
+        />
+        <FormInput
+          id="password"
+          name="password"
+          type="password"
+          label="Hasło"
+          value={formData.password}
+          onChange={handleInputChange}
+          placeholder="Wpisz swoje hasło"
+        />
+      </AuthForm>
+    </header>
   );
 }
 

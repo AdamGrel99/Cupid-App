@@ -30,11 +30,15 @@ const WeddingPage: React.FC = () => {
   return (
     <div className="h-screen flex">
       <Sidebar
-        onLogout={handleLogout}
-        onSettings={handleSettings}
-        onSave={handleSave}
-        onExport={handleExport}
-        onWeddingCard={handleWeddingCard}
+        buttons={[
+          { label: "Wyloguj się", onClick: handleLogout },
+          { label: "Ustawienia", onClick: handleSettings },
+          { label: "Zapisz", onClick: handleSave },
+          { label: "Eksportuj do PDF", onClick: () => handleExport("pdf") },
+          { label: "Eksportuj do HTML", onClick: () => handleExport("html") },
+          { label: "Eksportuj do DOCX", onClick: () => handleExport("docx") },
+          { label: "Generuj Wizytówkę", onClick: handleWeddingCard },
+        ]}
       />
       <Canvas pageNumber={pageNumber} />
       <ImageViewer images={images} />

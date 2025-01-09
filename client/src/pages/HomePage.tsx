@@ -1,68 +1,93 @@
 import { Link } from "react-router-dom";
+import MarqueeEffect from "../assets/animations/MarqueeEffect";
+import BackgroundWithCupids from "../components/HomePage/BackgroundWithCupids";
+import SectionWrapper from "../components/HomePage/SectionWrapper";
+import InteractivePreview from "../components/HomePage/InteractivePreview";
+import AlbumFeature from "../components/HomePage/AlbumFeature";
+
+// Zdjęcia
+import albumImage from "../assets/images/homePage/pngegg.png";
+import photosImage from "../assets/images/homePage/pngegg (1).png";
+import printImage from "../assets/images/homePage/pngegg (2).png";
+import saveImage from "../assets/images/homePage/pngegg (4).png";
+
+// Fonty
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50 text-center flex flex-col">
-      <header className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-        <h1 className="text-6xl font-bold">Cupid</h1>
-        <nav className="mt-8">
+      <header className="w-full flex flex-col items-center justify-center h-screen bg-gradient-to-r from-purple-500 to-pink-500">
+        <MarqueeEffect
+          title="Cupid"
+          subtitle="Najlepsza aplikacja do uchwycenia najlepszych momentów weselnych."
+        />
+        <BackgroundWithCupids />
+        <nav className="mt-4">
           <Link
             to="/login"
-            className="text-lg px-6 py-2 bg-white text-purple-600 rounded-lg shadow-md hover:bg-purple-200 mx-2"
+            className="text-lg font-semibold px-8 py-4 bg-white text-purple-600 rounded-lg shadow-md hover:bg-purple-200 mx-2"
           >
             Logowanie
           </Link>
           <Link
             to="/register"
-            className="text-lg px-6 py-2 bg-white text-pink-600 rounded-lg shadow-md hover:bg-pink-200 mx-2"
+            className="text-lg font-semibold px-8 py-4 bg-white text-pink-600 rounded-lg shadow-md hover:bg-pink-200 mx-2"
           >
             Rejestracja
           </Link>
         </nav>
+        <button
+          onClick={() => {
+            const section = document.getElementById("album-features");
+            if (section) section.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="absolute bottom-8 w-16 h-16 bg-black/50 text-white rounded-full shadow-lg flex items-center justify-center text-3xl hover:bg-black/70"
+        >
+          <FontAwesomeIcon icon={faArrowDown} beat />
+        </button>
       </header>
 
       <main className="flex-grow">
-        <section className="py-20 px-4">
-          <h2 className="text-4xl font-semibold text-gray-800">
-            Co oferujemy?
-          </h2>
-          <p className="mt-4 text-lg text-gray-600">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptates
-            est delectus dolorem officiis numquam excepturi at ullam sit minima
-            iusto. Quibusdam quae dignissimos temporibus consectetur autem non
-            neque saepe fuga! Amet repellat accusantium, vel maiores aperiam
-            praesentium iusto ad id aspernatur quaerat eaque? Quia, maxime!
-            Assumenda non quam recusandae, vero possimus expedita, ratione quas
-            rerum aspernatur officiis blanditiis provident fugit!
-          </p>
-        </section>
+        <SectionWrapper
+          id="album-features"
+          title="Twój interaktywny album weselny"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <AlbumFeature
+              image={albumImage}
+              title="Dodawanie zdjęć i tagów"
+              description="Łatwo przesyłaj zdjęcia z aplikacji, przeciągaj je metodą drag’n’drop i dodawaj tagi, aby upamiętnić każdą chwilę."
+            />
+            <AlbumFeature
+              image={photosImage}
+              title="Personalizowanie albumu"
+              description="Używaj naklejek, tekstów i różnych stylów, aby uczynić album wyjątkowym i dopasowanym do Twoich wspomnień."
+            />
+            <AlbumFeature
+              image={printImage}
+              title="Eksport i drukowanie"
+              description="Eksportuj gotowy album jako plik PDF lub HTML, aby łatwo go wydrukować lub podzielić się nim online."
+            />
+            <AlbumFeature
+              image={saveImage}
+              title="Zapis i odczyt projektu"
+              description="Zachowaj swój projekt albumu, aby edytować go w przyszłości lub odtworzyć każdą szczegółową chwilę."
+            />
+          </div>
+        </SectionWrapper>
 
-        <section className="py-20 px-4 bg-gray-100">
-          <h2 className="text-4xl font-semibold text-gray-800">Regulamin</h2>
-          <p className="mt-4 text-lg text-gray-600">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates
-            maxime minima harum incidunt quasi mollitia accusantium nulla
-            doloribus, repellat, sapiente repellendus enim dignissimos
-            consequatur debitis delectus. Sint voluptatem quasi temporibus!
-            Cupiditate quis, nam pariatur hic nulla fugit rem aut fuga
-            consequatur, necessitatibus eveniet eaque totam, reiciendis non! Ab
-            sapiente, fuga iusto iure, quae omnis id quam repudiandae explicabo
-            maxime quaerat. Aliquam reiciendis corporis error neque, doloremque
-            nisi amet voluptas, minima recusandae eaque itaque sed rerum atque.
-            Cumque facilis maxime asperiores laudantium suscipit rerum tempora!
-            Sunt unde corporis nam omnis quidem? Delectus consequatur beatae,
-            fugit impedit reiciendis numquam accusantium dolorum omnis vitae
-            saepe possimus tempore dolores quia tempora exercitationem eligendi
-            nemo natus nisi! Soluta vitae quo voluptas a ipsam perferendis non!
-            Eveniet nesciunt fugit vitae? Quisquam, magni fugit reprehenderit
-            adipisci quia aperiam ad. Itaque ut est unde. Nostrum eius nobis
-            minus inventore dolorum rerum reiciendis animi sed aut ullam.
-            Corrupti, nisi!
-          </p>
-        </section>
+        <SectionWrapper
+          id="interactive-preview"
+          title="Zobacz, jak to działa"
+          bgColor="gray-100"
+        >
+          <InteractivePreview />
+        </SectionWrapper>
       </main>
 
-      <footer className="py-4 bg-gray-800 text-white">
+      <footer className="w-full py-4 bg-gray-800 text-white">
         <p>&copy; 2024 Cupid. Wszelkie prawa zastrzeżone.</p>
       </footer>
     </div>

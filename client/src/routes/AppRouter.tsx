@@ -23,6 +23,14 @@ export const router = createBrowserRouter([
     element: <RegisterPage />,
   },
   {
+    path: "/cardqr",
+    element: <CardQrPage />,
+  },
+  {
+    path: "/home",
+    element: <WeddingPage />,
+  },
+  {
     path: "/edit",
     element: (
       <EditPage imageUrl="https://www.swiatobrazu.pl/zdjecie/artykuly/552332/zdjecie-tygodnia.jpeg" />
@@ -31,13 +39,5 @@ export const router = createBrowserRouter([
   {
     path: "/foto",
     element: <FotoPage />,
-  },
-  {
-    path: "/main",
-    element: <WeddingPage />,
-  },
-  {
-    path: "/cardqr",
-    element: <CardQrPage />,
   },
 ]);
