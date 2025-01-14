@@ -6,10 +6,13 @@ import BackgroundWithCupids from "../components/HomePage/BackgroundWithCupids";
 
 function RegisterPage() {
   const [formData, setFormData] = useState<User>({
-    id: "",
+    id: "1",
     email: "",
     password: "",
     name: "",
+    surname: "3",
+    token: "4",
+    role: "132",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

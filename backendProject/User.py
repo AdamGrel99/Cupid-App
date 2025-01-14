@@ -5,7 +5,8 @@ USER_FILE = "users.json"
 
 
 class User:
-    def __init__(self, login, password, name, surname, token, role):
+    def __init__(self,id, login, password, name, surname, token, role):
+        self.id = id
         self.login = login
         self.password = password
         self.name = name
@@ -15,6 +16,26 @@ class User:
 
     def to_json(self):
         return json.dumps(self.__dict__, ensure_ascii=False)
+    
+    
+    def handle_registration(request_body):
+    # Parsowanie danych JSON od frontendu
+        data = json.loads(request_body)
+        
+        # Wypełnienie brakujących danych
+        id = data.get("id")
+        email = data.get("email")
+        password = data.get("password")
+        name = data.get("name")
+        surname = data.get("surname")  
+        token = data.get("token")  #Todo Generowanie tokenu
+        role = data.get("role")  #Todo wybieranie Domyślna rola
+
+        # Tworzenie obiektu User
+        user = User(id, email, password, name, surname, token, role)
+
+        # Zwrócenie obiektu użytkownika jako JSON (lub zapis w bazie danych)
+        return user.to_json()
 
     @staticmethod
     def load_users():
@@ -28,12 +49,7 @@ class User:
         except json.JSONDecodeError:
             return []  
 
-    @staticmethod
-    def save_users(user):
-        users = User.load_users()  
-        users.append(user.__dict__)  
-        with open(USER_FILE, "w") as file:
-            json.dump(users, file, ensure_ascii=False, indent=4)
+    
 
     @staticmethod
     def get_user_by_login(login):
@@ -74,23 +90,5 @@ class User:
         else:
             print("User not found")
 
-if __name__ == '__main__':
-    # Create a new user instance
-    #x = User("dupa", "password", "John", "Doe", "token123", "admin")
-
-    # Save the user to the JSON file
-    #User.save_users(x)
-
-    # Print the user's login
-
-    user_data = User.get_user_by_login("dupa")
-    user_data2 = User.get_user_by_name("John")
-    user_data3 = User.get_user_by_surname("Doe")
-    user_data4 = User.get_user_by_token("token12")
-    User.compare_result_of_seach(user_data)
-    User.compare_result_of_seach(user_data2)
-    User.compare_result_of_seach(user_data3)
-    User.compare_result_of_seach(user_data4)
-    print("Funkcje zwracają całe obiekty Adasko dopisz sobie jakie tam ma byc api i jak cos by nie dzialalo to wal smialo testowalem u siebie na wewnetrznym systemie i bylo git znajdowalo odpowiednich ludzikow")
 
 

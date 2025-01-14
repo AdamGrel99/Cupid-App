@@ -9,6 +9,10 @@ function LoginPage() {
     id: "",
     email: "",
     password: "",
+    name: "",
+    surname: "",
+    token: "",
+    role: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

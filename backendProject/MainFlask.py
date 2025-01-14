@@ -4,13 +4,14 @@ import json
 import generate_qr_card
 import receive_photo
 import generowanieTokenu
+import User
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173", "http://192.168.10.102:5173", "http://192.168.10.102::5173", "http://192.168.10.102::5173"]}})
 
 # CORS(app)
 
-@app.route('/api/generate_qr_card', methods=['POST'])
+@app.route('/api/cardqr', methods=['POST'])
 def create_card():
     card_data = json.loads(request.data)
     # if not employee_is_valid(employee):
@@ -22,12 +23,15 @@ def create_card():
 
     return jsonify({'location': f'/{token}/ulotka.pdf'}), 201
 
+@app.route('/api/register',methods=['POST'])
+def restister():
+    User.User.handle_registration(request.data)
 
-@app.route('/api/send_photo', methods=['POST'])
+@app.route('/api/foto', methods=['POST'])
 def save_photo():
     photo_data = json.loads(request.data)
 
-    # generate_qr_card.getCalled(photo_data)
+    generate_qr_card.getCalled(photo_data)
     receive_photo.receivePhoto(photo_data)
 
     token = photo_data["token"]
