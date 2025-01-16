@@ -1,31 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
-import Canvas from "../../components/Canvas";
+import Canvas from "../../components/Canvas/Canvas";
 import ImageViewer from "../../components/ImageViewer";
+import AlbumNavigator from "../../components/Canvas/AlbumNavigator";
 
 const WeddingPage: React.FC = () => {
-  const [pageNumber, setPageNumber] = useState(1);
   const [images, setImages] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleLogout = () => {
-    console.log("Log out");
+  const stageRef = React.useRef(null);
+  const [dragUrl, setDragUrl] = useState<string | null>(null);
+
+  const fetchImages = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("https://picsum.photos/v2/list");
+      const data = await response.json();
+      const imageUrls = data.map((image: any) => image.download_url);
+      console.log(imageUrls);
+      setImages(imageUrls);
+    } catch (error) {
+      console.log("Błąd podczas ładowania zdjęć");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSettings = () => {
-    console.log("Settings");
-  };
+  useEffect(() => {
+    fetchImages();
+  }, []);
 
-  const handleSave = () => {
-    console.log("Save");
-  };
-
-  const handleExport = (format: "pdf" | "html" | "docx") => {
+  const handleLogout = () => console.log("Log out");
+  const handleSettings = () => console.log("Settings");
+  const handleSave = () => console.log("Save");
+  const handleExport = (format: "pdf" | "html" | "docx") =>
     console.log(`Eksport do ${format.toUpperCase()}`);
-  };
-
-  const handleWeddingCard = () => {
-    console.log("Generate Card");
-  };
+  const handleWeddingCard = () => console.log("Generate Card");
 
   return (
     <div className="h-screen flex">
@@ -40,8 +50,13 @@ const WeddingPage: React.FC = () => {
           { label: "Generuj Wizytówkę", onClick: handleWeddingCard },
         ]}
       />
-      <Canvas pageNumber={pageNumber} />
-      <ImageViewer images={images} />
+      <div className="flex flex-col flex-grow bg-gray-100 p-8">
+        <Canvas stageRef={stageRef} dragUrl={dragUrl || ""} />
+        <div className="flex items-center justify-center p-4">
+          <AlbumNavigator />
+        </div>
+      </div>
+      <ImageViewer images={images} loading={loading} onImageDrag={setDragUrl} />
     </div>
   );
 };
