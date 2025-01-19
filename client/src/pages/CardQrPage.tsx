@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useSearchParams } from "react-router-dom";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { QrData } from "../models/QrData";
 import Sidebar from "../components/Sidebar";
 
@@ -11,8 +11,10 @@ function CardQrPage() {
     womanName: "",
   });
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  var tokenFromUrl = searchParams.get("token");
+  const [searchParams] = useSearchParams();
+  const tokenFromUrl = searchParams.get("token");
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (tokenFromUrl) {
       setFormData((prev) => ({ ...prev, token: tokenFromUrl as string }));
@@ -29,14 +31,11 @@ function CardQrPage() {
     e.preventDefault();
     console.log("Rejestracja:", formData);
 
-    setFormData((prev: QrData) => ({ ...prev, token: tokenFromUrl as string }));
-
-    const requestOptions = {
+    fetch("http://192.168.100.12:5000/api/generate_qr_card", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
-    };
-    fetch("http://192.168.100.12:5000/api/generate_qr_card", requestOptions)
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Błąd podczas żądania: " + response.status);
@@ -44,19 +43,17 @@ function CardQrPage() {
         return response.json();
       })
       .then((data) => {
-        console.log("Lokacja: ", data.location); // Pobiera location z odpowiedzi
+        console.log("Lokacja: ", data.location);
       })
       .catch((error) => console.error("Błąd: ", error));
-
-    // Wyślij dane do API rejestracji
   };
 
   const handleLogout = () => {
     console.log("Log out");
   };
 
-  const handleCreateEvent = () => {
-    console.log("Create Event");
+  const handleBack = () => {
+    navigate("/home");
   };
 
   return (
@@ -64,13 +61,15 @@ function CardQrPage() {
       <Sidebar
         buttons={[
           { label: "Wyloguj się", onClick: handleLogout },
-          { label: "Utwórz Wydarzenie", onClick: handleCreateEvent },
+          { label: "Powrót", onClick: handleBack },
         ]}
       />
 
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      {/* Główny kontener na resztę strony */}
+      <div className="flex-1 flex items-center justify-center bg-gray-100">
+        {/* Komponent formularza */}
         <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-md rounded-md">
-          <h2 className="text-2xl font-bold text-center">Rejestracja</h2>
+          <h2 className="text-2xl font-bold text-center">Wydarzenie</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label

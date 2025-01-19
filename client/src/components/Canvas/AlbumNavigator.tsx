@@ -1,57 +1,52 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../app/store";
-import { HistoryPageStack } from "../../models/canvas/HistoryPageStack";
-import { addToStack } from "../../features/wedding/historyPageSlice";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCaretLeft,
   faCaretRight,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
+import { addAlbumPage } from "../../features/wedding/historyAlbumSlice";
 
-const AlbumNavigator: React.FC = () => {
+interface AlbumNavigatorProps {
+  currentPage: number;
+  setCurrentPage: (pageNumber: number) => void;
+}
+
+const AlbumNavigator: React.FC<AlbumNavigatorProps> = ({
+  currentPage,
+  setCurrentPage,
+}) => {
   const dispatch: AppDispatch = useDispatch();
-
-  const historyPageStack = useSelector(
-    (state: RootState) => state.historyPage.stackElements
+  const albumStack = useSelector(
+    (state: RootState) => state.historyAlbum.albumStack
   );
 
-  const [currentPage, setCurrentPage] = useState(1);
+  // test
+  console.log(currentPage);
+  console.log(albumStack);
 
   const handleAddPage = () => {
-    const newPage: HistoryPageStack = {
-      pageNumber: historyPageStack.length + 1,
+    const newPage = {
+      pageNumber: albumStack.length + 1,
       images: [],
     };
-    dispatch(addToStack(newPage));
-    setCurrentPage(historyPageStack.length + 2); // Przejdź do nowo dodanej strony
+    dispatch(addAlbumPage(newPage));
+    setCurrentPage(albumStack.length + 1);
   };
 
-  // const handleRemovePage = () => {
-  //   if (historyPageStack.length > 0) {
-  //     dispatch(removeFromStack());
-  //     setCurrentPage((prev) => Math.max(prev - 1, 0)); // Zmniejsz numer strony
-  //   }
-  // };
-
   const handleNextPage = () => {
-    if (currentPage < historyPageStack.length + 1) {
-      setCurrentPage((prev) => prev + 1);
+    if (currentPage < albumStack.length) {
+      setCurrentPage(currentPage + 1);
     }
   };
 
   const handlePreviousPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage((prev) => prev - 1);
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
     }
   };
-
-  // const handleUndo = () => {
-  //   dispatch(removeFromStack());
-  //   setCurrentPage((prev) => Math.max(prev - 1, 0));
-  // };
 
   return (
     <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg">
@@ -63,11 +58,11 @@ const AlbumNavigator: React.FC = () => {
         <FontAwesomeIcon icon={faCaretLeft} />
       </button>
       <span className="text-lg font-semibold">
-        Strona {currentPage} / {historyPageStack.length + 1}
+        Strona {currentPage} / {albumStack.length}
       </span>
       <button
         onClick={handleNextPage}
-        disabled={currentPage === historyPageStack.length + 1}
+        disabled={currentPage === albumStack.length}
         className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 disabled:bg-gray-300"
       >
         <FontAwesomeIcon icon={faCaretRight} />

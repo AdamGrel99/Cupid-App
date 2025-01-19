@@ -1,46 +1,36 @@
 import React, { RefObject, useState } from "react";
 import CanvasField from "./CanvasField";
+import { addImageToPage } from "../../features/wedding/historyAlbumSlice";
+import { AppDispatch } from "../../app/store";
+import { useDispatch } from "react-redux";
+
+interface ImageProps {
+  x: number;
+  y: number;
+  rotation: number;
+  height: number;
+  width: number;
+  src: string;
+  isSelected: boolean;
+  onSelect: () => void;
+  onDeselect: () => void;
+}
+
 interface CanvasProps {
   stageRef: RefObject<any>;
   dragUrl: string;
+  currentPage: number;
+  setCurrentPage: (pageNumber: number) => void;
 }
 
-const Canvas: React.FC<CanvasProps> = ({ stageRef, dragUrl }) => {
-  const [images, setImages] = useState([
-    {
-      src: "https://picsum.photos/id/0/5000/3333",
-      x: 250,
-      y: 250,
-      height: 400,
-      width: 400,
-      rotation: 0,
-      isSelected: false,
-      onSelect: () => handleSelect(0),
-      onDeselect: () => handleDeselect(),
-    },
-    {
-      src: "https://konvajs.org/assets/lion.png",
-      x: 450,
-      y: 450,
-      height: 400,
-      width: 400,
-      rotation: 0,
-      isSelected: false,
-      onSelect: () => handleSelect(1),
-      onDeselect: () => handleDeselect(),
-    },
-    {
-      src: "https://konvajs.org/assets/lion.png",
-      x: 1450,
-      y: 1450,
-      height: 400,
-      width: 400,
-      rotation: 0,
-      isSelected: false,
-      onSelect: () => handleSelect(2),
-      onDeselect: () => handleDeselect(),
-    },
-  ]);
+const Canvas: React.FC<CanvasProps> = ({
+  stageRef,
+  dragUrl,
+  currentPage,
+  setCurrentPage,
+}) => {
+  const dispatch: AppDispatch = useDispatch();
+  const [images, setImages] = useState<ImageProps[]>([]);
 
   const handleSelect = (index: number) => {
     setImages((prev) =>
@@ -60,6 +50,20 @@ const Canvas: React.FC<CanvasProps> = ({ stageRef, dragUrl }) => {
     );
   };
 
+  const handleAddImage = () => {
+    const newImage = {
+      src: "https://picsum.photos/200",
+      x: 50,
+      y: 50,
+      width: 100,
+      height: 100,
+      rotation: 0,
+      isSelected: false,
+    };
+
+    dispatch(addImageToPage({ pageNumber: currentPage, image: newImage }));
+  };
+
   return (
     <div
       className="flex justify-center items-center h-88vh"
@@ -71,7 +75,7 @@ const Canvas: React.FC<CanvasProps> = ({ stageRef, dragUrl }) => {
         const newImage = {
           ...stageRef.current.getPointerPosition(),
           src: dragUrl,
-          onSelect: () => handleSelect(3),
+          onSelect: () => handleSelect(images.length),
           onDeselect: () => handleDeselect(),
         };
         setImages((prevImages) => {
@@ -81,7 +85,11 @@ const Canvas: React.FC<CanvasProps> = ({ stageRef, dragUrl }) => {
       }}
       onDragOver={(e) => e.preventDefault()}
     >
-      <CanvasField images={images} stageRef={stageRef} />
+      <CanvasField
+        images={images}
+        stageRef={stageRef}
+        currentPage={currentPage}
+      />
     </div>
   );
 };

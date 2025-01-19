@@ -1,8 +1,19 @@
-import { ImageProps } from "../../models/canvas/ImageProps";
 import React, { useEffect, useRef } from "react";
 import { Image, Rect, Transformer } from "react-konva";
 import useImage from "use-image";
 import Konva from "konva";
+
+interface ImageProps {
+  x: number;
+  y: number;
+  rotation: number;
+  height: number;
+  width: number;
+  src: string;
+  isSelected: boolean;
+  onSelect: () => void;
+  onDeselect: () => void;
+}
 
 export const URLImage = (image: ImageProps) => {
   const [img, status] = useImage(image.src);

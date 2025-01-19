@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Layer, Stage } from "react-konva";
-import { ImageProps } from "../../models/canvas/ImageProps";
 import { URLImage } from "./URLImage";
 
 const A4_WIDTH = 3508;
 const A4_HEIGHT = 2480;
 
+interface ImageProps {
+  x: number;
+  y: number;
+  rotation: number;
+  height: number;
+  width: number;
+  src: string;
+  isSelected: boolean;
+  onSelect: () => void;
+  onDeselect: () => void;
+}
+
 interface CanvasFieldProps {
   images: ImageProps[];
   stageRef: React.RefObject<any>;
+  currentPage: number; // w zależności od currentPage wyświetlamy
 }
 
 const CanvasField: React.FC<CanvasFieldProps> = ({ images, stageRef }) => {
@@ -50,13 +62,16 @@ const CanvasField: React.FC<CanvasFieldProps> = ({ images, stageRef }) => {
       className="bg-white-200 border border-gray-700"
       ref={stageRef}
     >
-      {/* {layersData.map((layerElements, layerIndex) => (
+      {
+        // w zalezności od page wyswietlam tylko to xdd
+        /* {layersData.map((layerElements, layerIndex) => (
         <Layer key={layerIndex} visible={currentPage === layerIndex}>
           {layerElements.map((element, elementIndex) => (
             <React.Fragment key={elementIndex}>{element}</React.Fragment>
           ))}
         </Layer>
-      ))} */}
+      ))} */
+      }
       <Layer>
         {images.map((image, index) => (
           <URLImage key={index} {...image} />

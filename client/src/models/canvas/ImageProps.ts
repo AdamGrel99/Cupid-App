@@ -6,6 +6,4 @@ export interface ImageProps {
   width: number;
   src: string;
   isSelected: boolean;
-  onSelect: () => void;
-  onDeselect: () => void;
 }
