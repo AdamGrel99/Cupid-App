@@ -7,16 +7,34 @@ import {
   faCaretRight,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { addAlbumPage } from "../../features/wedding/historyAlbumSlice";
+import {
+  addAlbumPage,
+  addImageToPage,
+  clearImagesOnPage,
+} from "../../features/wedding/historyAlbumSlice";
+
+export interface ImageProps {
+  x: number;
+  y: number;
+  rotation: number;
+  height: number;
+  width: number;
+  src: string;
+  isSelected: boolean;
+  onSelect: () => void;
+  onDeselect: () => void;
+}
 
 interface AlbumNavigatorProps {
   currentPage: number;
   setCurrentPage: (pageNumber: number) => void;
+  images: ImageProps[];
 }
 
 const AlbumNavigator: React.FC<AlbumNavigatorProps> = ({
   currentPage,
   setCurrentPage,
+  images,
 }) => {
   const dispatch: AppDispatch = useDispatch();
   const albumStack = useSelector(
@@ -24,8 +42,9 @@ const AlbumNavigator: React.FC<AlbumNavigatorProps> = ({
   );
 
   // test
-  console.log(currentPage);
+  // console.log(currentPage);
   console.log(albumStack);
+  // console.log(images);
 
   const handleAddPage = () => {
     const newPage = {
@@ -33,19 +52,38 @@ const AlbumNavigator: React.FC<AlbumNavigatorProps> = ({
       images: [],
     };
     dispatch(addAlbumPage(newPage));
+    handleAddImages(images);
     setCurrentPage(albumStack.length + 1);
   };
 
   const handleNextPage = () => {
     if (currentPage < albumStack.length) {
+      handleAddImages(images);
       setCurrentPage(currentPage + 1);
     }
   };
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
+      handleAddImages(images);
       setCurrentPage(currentPage - 1);
     }
+  };
+
+  const handleAddImages = (images: ImageProps[]) => {
+    dispatch(clearImagesOnPage(currentPage));
+    images.forEach((image, index) => {
+      const newImage = {
+        src: image.src,
+        x: image.x,
+        y: image.y,
+        width: image.width,
+        height: image.height,
+        rotation: image.rotation,
+        isSelected: false,
+      };
+      dispatch(addImageToPage({ pageNumber: currentPage, image: newImage }));
+    });
   };
 
   return (

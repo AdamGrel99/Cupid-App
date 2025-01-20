@@ -1,8 +1,5 @@
-import React, { RefObject, useState } from "react";
+import React, { RefObject } from "react";
 import CanvasField from "./CanvasField";
-import { addImageToPage } from "../../features/wedding/historyAlbumSlice";
-import { AppDispatch } from "../../app/store";
-import { useDispatch } from "react-redux";
 
 interface ImageProps {
   x: number;
@@ -20,48 +17,27 @@ interface CanvasProps {
   stageRef: RefObject<any>;
   dragUrl: string;
   currentPage: number;
-  setCurrentPage: (pageNumber: number) => void;
+  handleSelect: (index: number) => void;
+  handleDeselect: () => void;
+  images: ImageProps[];
+  setImages: React.Dispatch<React.SetStateAction<ImageProps[]>>;
 }
 
 const Canvas: React.FC<CanvasProps> = ({
   stageRef,
   dragUrl,
   currentPage,
-  setCurrentPage,
+  handleSelect,
+  handleDeselect,
+  images,
+  setImages,
 }) => {
-  const dispatch: AppDispatch = useDispatch();
-  const [images, setImages] = useState<ImageProps[]>([]);
-
-  const handleSelect = (index: number) => {
-    setImages((prev) =>
-      prev.map((img, i) => ({
-        ...img,
-        isSelected: i === index,
-      }))
+  const updateImage = (index: number, updates: Partial<ImageProps>) => {
+    setImages((prevImages) =>
+      prevImages.map((image, i) =>
+        i === index ? { ...image, ...updates } : image
+      )
     );
-  };
-
-  const handleDeselect = () => {
-    setImages((prev) =>
-      prev.map((img) => ({
-        ...img,
-        isSelected: false,
-      }))
-    );
-  };
-
-  const handleAddImage = () => {
-    const newImage = {
-      src: "https://picsum.photos/200",
-      x: 50,
-      y: 50,
-      width: 100,
-      height: 100,
-      rotation: 0,
-      isSelected: false,
-    };
-
-    dispatch(addImageToPage({ pageNumber: currentPage, image: newImage }));
   };
 
   return (
@@ -89,6 +65,7 @@ const Canvas: React.FC<CanvasProps> = ({
         images={images}
         stageRef={stageRef}
         currentPage={currentPage}
+        updateImage={updateImage}
       />
     </div>
   );

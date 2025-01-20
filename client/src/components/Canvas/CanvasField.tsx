@@ -21,9 +21,15 @@ interface CanvasFieldProps {
   images: ImageProps[];
   stageRef: React.RefObject<any>;
   currentPage: number; // w zależności od currentPage wyświetlamy
+  updateImage: (index: number, updates: Partial<ImageProps>) => void;
 }
 
-const CanvasField: React.FC<CanvasFieldProps> = ({ images, stageRef }) => {
+const CanvasField: React.FC<CanvasFieldProps> = ({
+  images,
+  stageRef,
+  currentPage,
+  updateImage,
+}) => {
   const [size, setSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -74,7 +80,11 @@ const CanvasField: React.FC<CanvasFieldProps> = ({ images, stageRef }) => {
       }
       <Layer>
         {images.map((image, index) => (
-          <URLImage key={index} {...image} />
+          <URLImage
+            key={index}
+            {...image}
+            updateImage={(updates) => updateImage(index, updates)}
+          />
         ))}
       </Layer>
     </Stage>

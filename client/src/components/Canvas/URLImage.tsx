@@ -15,7 +15,11 @@ interface ImageProps {
   onDeselect: () => void;
 }
 
-export const URLImage = (image: ImageProps) => {
+interface URLImageProps extends ImageProps {
+  updateImage: (updates: Partial<ImageProps>) => void;
+}
+
+export const URLImage = (image: URLImageProps) => {
   const [img, status] = useImage(image.src);
   const prepared_id = image.src.split("/").pop(); // pobierz numer id z url
   const shapeRef = useRef<Konva.Image>(null);
@@ -59,8 +63,15 @@ export const URLImage = (image: ImageProps) => {
 
               node.scaleX(1);
               node.scaleY(1);
-              node.width(node.width() * scaleX);
-              node.height(node.height() * scaleY);
+
+              const newWidth = node.width() * scaleX;
+              const newHeight = node.height() * scaleY;
+
+              image.updateImage({
+                width: newWidth,
+                height: newHeight,
+                rotation: node.rotation(),
+              });
             }
           }}
           onDblClick={image.onDeselect}

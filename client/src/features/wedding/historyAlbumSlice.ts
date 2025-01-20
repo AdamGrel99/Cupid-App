@@ -30,10 +30,18 @@ const historyAlbumSlice = createSlice({
     removeLastPage(state) {
       state.albumStack.pop();
     },
+    clearImagesOnPage(state, action: PayloadAction<number>) {
+      const page = state.albumStack.find(
+        (page) => page.pageNumber === action.payload
+      );
+      if (page) {
+        page.images = [];
+      }
+    },
   },
 });
 
 
-export const { addAlbumPage, addImageToPage, removeLastPage } =
+export const { addAlbumPage, addImageToPage, removeLastPage, clearImagesOnPage } =
   historyAlbumSlice.actions;
 export default historyAlbumSlice.reducer;

@@ -5,12 +5,44 @@ import ImageViewer from "../../components/ImageViewer";
 import AlbumNavigator from "../../components/Canvas/AlbumNavigator";
 import { useNavigate } from "react-router-dom";
 
+export interface ImageProps {
+  x: number;
+  y: number;
+  rotation: number;
+  height: number;
+  width: number;
+  src: string;
+  isSelected: boolean;
+  onSelect: () => void;
+  onDeselect: () => void;
+}
+
 const WeddingPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const stageRef = React.useRef(null);
   const [dragUrl, setDragUrl] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const [images, setImages] = useState<ImageProps[]>([]);
+
+  const handleSelect = (index: number) => {
+    setImages((prev) =>
+      prev.map((img, i) => ({
+        ...img,
+        isSelected: i === index,
+      }))
+    );
+  };
+
+  const handleDeselect = () => {
+    setImages((prev) =>
+      prev.map((img) => ({
+        ...img,
+        isSelected: false,
+      }))
+    );
+  };
 
   const handleLogout = () => console.log("Log out");
   const handleSave = () => console.log("Save");
@@ -37,12 +69,16 @@ const WeddingPage: React.FC = () => {
           stageRef={stageRef}
           dragUrl={dragUrl || ""}
           currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
+          handleSelect={handleSelect}
+          handleDeselect={handleDeselect}
+          images={images}
+          setImages={setImages}
         />
         <div className="flex items-center justify-center p-4">
           <AlbumNavigator
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            images={images}
           />
         </div>
       </div>
