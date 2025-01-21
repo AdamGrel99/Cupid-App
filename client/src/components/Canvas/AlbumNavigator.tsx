@@ -30,6 +30,8 @@ interface AlbumNavigatorProps {
   setCurrentPage: (pageNumber: number) => void;
   images: ImageProps[];
   setImages: React.Dispatch<React.SetStateAction<ImageProps[]>>;
+  handleSelect: (index: number) => void;
+  handleDeselect: () => void;
 }
 
 const AlbumNavigator: React.FC<AlbumNavigatorProps> = ({
@@ -37,6 +39,8 @@ const AlbumNavigator: React.FC<AlbumNavigatorProps> = ({
   setCurrentPage,
   images,
   setImages,
+  handleSelect,
+  handleDeselect,
 }) => {
   const dispatch: AppDispatch = useDispatch();
   const albumStack = useSelector(
@@ -50,22 +54,22 @@ const AlbumNavigator: React.FC<AlbumNavigatorProps> = ({
     if (currentPageData) {
       const updatedImages = currentPageData.images.map((image) => ({
         ...image,
-        onSelect: () => {}, // Możesz dostosować tę funkcję
-        onDeselect: () => {}, // Możesz dostosować tę funkcję
+        onSelect: () => handleSelect(images.length),
+        onDeselect: () => handleDeselect(),
       }));
       setImages(updatedImages);
     } else {
       setImages([]);
     }
-  }, [currentPage, albumStack, setImages]);
+  }, [currentPage]);
 
   // test
   // console.log("Current Page");
   // console.log(currentPage);
   // console.log("Album");
   // console.log(albumStack);
-  console.log("Images");
-  console.log(images);
+  // console.log("Images");
+  // console.log(images);
 
   const handleAddPage = () => {
     const newPage = {

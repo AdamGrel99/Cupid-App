@@ -55,7 +55,7 @@ export const URLImage = (image: URLImageProps) => {
           draggable
           ref={shapeRef as React.RefObject<Konva.Image>}
           onClick={image.onSelect}
-          onTransformEnd={() => {
+          onTransformEnd={(e) => {
             const node = shapeRef.current;
             if (node) {
               const scaleX = node.scaleX();
@@ -68,6 +68,8 @@ export const URLImage = (image: URLImageProps) => {
               const newHeight = node.height() * scaleY;
 
               image.updateImage({
+                x: e.target.x(),
+                y: e.target.y(),
                 width: newWidth,
                 height: newHeight,
                 rotation: node.rotation(),

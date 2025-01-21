@@ -80,6 +80,8 @@ const WeddingPage: React.FC = () => {
             setCurrentPage={setCurrentPage}
             images={images}
             setImages={setImages}
+            handleSelect={handleSelect}
+            handleDeselect={handleDeselect}
           />
         </div>
       </div>
