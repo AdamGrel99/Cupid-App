@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import MarqueeEffect from "../assets/animations/MarqueeEffect";
 import BackgroundWithCupids from "../components/HomePage/BackgroundWithCupids";
 import SectionWrapper from "../components/HomePage/SectionWrapper";
-import InteractivePreview from "../components/HomePage/InteractivePreview";
 import AlbumFeature from "../components/HomePage/AlbumFeature";
 
 // Zdjęcia
@@ -76,14 +75,6 @@ function HomePage() {
               description="Zachowaj swój projekt albumu, aby edytować go w przyszłości lub odtworzyć każdą szczegółową chwilę."
             />
           </div>
-        </SectionWrapper>
-
-        <SectionWrapper
-          id="interactive-preview"
-          title="Zobacz, jak to działa"
-          bgColor="gray-100"
-        >
-          <InteractivePreview />
         </SectionWrapper>
       </main>
 

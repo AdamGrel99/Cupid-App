@@ -1,13 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { HistoryAlbumStack } from '../../models/canvas/HistoryAlbumStack';
-import { HistoryPageStack } from '../../models/canvas/HistoryPageStack';
+import { HistoryAlbumStack, HistoryPageStack, HistoryImageProps } from '../../models/canvas/HistoryAlbumProps';
 
-interface HistoryAlbumState {
-  albumStack: HistoryAlbumStack[];
-}
-
-const initialState: HistoryAlbumState = {
-  albumStack: [],
+const initialState: HistoryAlbumStack = {
+  albumStack: [{
+    pageNumber: 1,
+    images: [],
+  }],
 };
 
 const historyAlbumSlice = createSlice({
@@ -15,14 +13,34 @@ const historyAlbumSlice = createSlice({
   initialState,
   reducers: {
     addAlbumPage(state, action: PayloadAction<HistoryPageStack>) {
-      const newPage: HistoryAlbumStack = { tabPage: [action.payload] };
-      state.albumStack.push(newPage);
+      state.albumStack.push(action.payload);
     },
-    removeLastAlbum(state) {
+    addImageToPage(
+      state,
+      action: PayloadAction<{ pageNumber: number; image: HistoryImageProps }>
+    ) {
+      const page = state.albumStack.find(
+        (page) => page.pageNumber === action.payload.pageNumber
+      );
+      if (page) {
+        page.images.push(action.payload.image);
+      }
+    },
+    removeLastPage(state) {
       state.albumStack.pop();
+    },
+    clearImagesOnPage(state, action: PayloadAction<number>) {
+      const page = state.albumStack.find(
+        (page) => page.pageNumber === action.payload
+      );
+      if (page) {
+        page.images = [];
+      }
     },
   },
 });
 
-export const { addAlbumPage, removeLastAlbum } = historyAlbumSlice.actions;
+
+export const { addAlbumPage, addImageToPage, removeLastPage, clearImagesOnPage } =
+  historyAlbumSlice.actions;
 export default historyAlbumSlice.reducer;

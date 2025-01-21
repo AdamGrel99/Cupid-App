@@ -1,16 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface ImageViewerProps {
-  images: string[];
-  loading: boolean;
   onImageDrag: (url: string) => void;
 }
 
-const ImageViewer: React.FC<ImageViewerProps> = ({
-  images,
-  loading,
-  onImageDrag,
-}) => {
+const ImageViewer: React.FC<ImageViewerProps> = ({ onImageDrag }) => {
+  const [images, setImages] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchImages = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("https://picsum.photos/v2/list");
+      const data = await response.json();
+      const imageUrls = data.map((image: any) => image.download_url);
+      setImages(imageUrls);
+    } catch (error) {
+      console.log("Błąd podczas ładowania zdjęć");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchImages();
+  }, []);
+
   if (loading) {
     return (
       <div className="w-64 h-full bg-white flex items-center justify-center border-l">

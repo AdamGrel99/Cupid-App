@@ -1,62 +1,20 @@
-import React, { RefObject, useState } from "react";
+import React from "react";
 import CanvasField from "./CanvasField";
-interface CanvasProps {
-  stageRef: RefObject<any>;
-  dragUrl: string;
-}
+import { CanvasProps, ImageProps } from "../../models/canvas/CanvasProps";
 
-const Canvas: React.FC<CanvasProps> = ({ stageRef, dragUrl }) => {
-  const [images, setImages] = useState([
-    {
-      src: "https://picsum.photos/id/0/5000/3333",
-      x: 250,
-      y: 250,
-      height: 400,
-      width: 400,
-      rotation: 0,
-      isSelected: false,
-      onSelect: () => handleSelect(0),
-      onDeselect: () => handleDeselect(),
-    },
-    {
-      src: "https://konvajs.org/assets/lion.png",
-      x: 450,
-      y: 450,
-      height: 400,
-      width: 400,
-      rotation: 0,
-      isSelected: false,
-      onSelect: () => handleSelect(1),
-      onDeselect: () => handleDeselect(),
-    },
-    {
-      src: "https://konvajs.org/assets/lion.png",
-      x: 1450,
-      y: 1450,
-      height: 400,
-      width: 400,
-      rotation: 0,
-      isSelected: false,
-      onSelect: () => handleSelect(2),
-      onDeselect: () => handleDeselect(),
-    },
-  ]);
-
-  const handleSelect = (index: number) => {
-    setImages((prev) =>
-      prev.map((img, i) => ({
-        ...img,
-        isSelected: i === index,
-      }))
-    );
-  };
-
-  const handleDeselect = () => {
-    setImages((prev) =>
-      prev.map((img) => ({
-        ...img,
-        isSelected: false,
-      }))
+const Canvas: React.FC<CanvasProps> = ({
+  stageRef,
+  dragUrl,
+  handleSelect,
+  handleDeselect,
+  images,
+  setImages,
+}) => {
+  const updateImage = (index: number, updates: Partial<ImageProps>) => {
+    setImages((prevImages) =>
+      prevImages.map((image, i) =>
+        i === index ? { ...image, ...updates } : image
+      )
     );
   };
 
@@ -71,7 +29,7 @@ const Canvas: React.FC<CanvasProps> = ({ stageRef, dragUrl }) => {
         const newImage = {
           ...stageRef.current.getPointerPosition(),
           src: dragUrl,
-          onSelect: () => handleSelect(3),
+          onSelect: () => handleSelect(images.length),
           onDeselect: () => handleDeselect(),
         };
         setImages((prevImages) => {
@@ -81,7 +39,11 @@ const Canvas: React.FC<CanvasProps> = ({ stageRef, dragUrl }) => {
       }}
       onDragOver={(e) => e.preventDefault()}
     >
-      <CanvasField images={images} stageRef={stageRef} />
+      <CanvasField
+        images={images}
+        stageRef={stageRef}
+        updateImage={updateImage}
+      />
     </div>
   );
 };

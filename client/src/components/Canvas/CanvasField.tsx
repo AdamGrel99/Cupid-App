@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Layer, Stage } from "react-konva";
-import { ImageProps } from "../../models/canvas/ImageProps";
 import { URLImage } from "./URLImage";
+import { CanvasFieldProps } from "../../models/canvas/CanvasProps";
 
 const A4_WIDTH = 3508;
 const A4_HEIGHT = 2480;
 
-interface CanvasFieldProps {
-  images: ImageProps[];
-  stageRef: React.RefObject<any>;
-}
-
-const CanvasField: React.FC<CanvasFieldProps> = ({ images, stageRef }) => {
+const CanvasField: React.FC<CanvasFieldProps> = ({
+  images,
+  stageRef,
+  updateImage,
+}) => {
   const [size, setSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -50,16 +49,13 @@ const CanvasField: React.FC<CanvasFieldProps> = ({ images, stageRef }) => {
       className="bg-white-200 border border-gray-700"
       ref={stageRef}
     >
-      {/* {layersData.map((layerElements, layerIndex) => (
-        <Layer key={layerIndex} visible={currentPage === layerIndex}>
-          {layerElements.map((element, elementIndex) => (
-            <React.Fragment key={elementIndex}>{element}</React.Fragment>
-          ))}
-        </Layer>
-      ))} */}
       <Layer>
         {images.map((image, index) => (
-          <URLImage key={index} {...image} />
+          <URLImage
+            key={index}
+            {...image}
+            updateImage={(updates) => updateImage(index, updates)}
+          />
         ))}
       </Layer>
     </Stage>
