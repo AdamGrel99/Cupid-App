@@ -79,6 +79,7 @@ const WeddingPage: React.FC = () => {
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             images={images}
+            setImages={setImages}
           />
         </div>
       </div>

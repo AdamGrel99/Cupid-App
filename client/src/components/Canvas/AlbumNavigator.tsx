@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../app/store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -29,28 +29,50 @@ interface AlbumNavigatorProps {
   currentPage: number;
   setCurrentPage: (pageNumber: number) => void;
   images: ImageProps[];
+  setImages: React.Dispatch<React.SetStateAction<ImageProps[]>>;
 }
 
 const AlbumNavigator: React.FC<AlbumNavigatorProps> = ({
   currentPage,
   setCurrentPage,
   images,
+  setImages,
 }) => {
   const dispatch: AppDispatch = useDispatch();
   const albumStack = useSelector(
     (state: RootState) => state.historyAlbum.albumStack
   );
 
+  useEffect(() => {
+    const currentPageData = albumStack.find(
+      (page) => page.pageNumber === currentPage
+    );
+    if (currentPageData) {
+      const updatedImages = currentPageData.images.map((image) => ({
+        ...image,
+        onSelect: () => {}, // Możesz dostosować tę funkcję
+        onDeselect: () => {}, // Możesz dostosować tę funkcję
+      }));
+      setImages(updatedImages);
+    } else {
+      setImages([]);
+    }
+  }, [currentPage, albumStack, setImages]);
+
   // test
+  // console.log("Current Page");
   // console.log(currentPage);
-  console.log(albumStack);
-  // console.log(images);
+  // console.log("Album");
+  // console.log(albumStack);
+  console.log("Images");
+  console.log(images);
 
   const handleAddPage = () => {
     const newPage = {
       pageNumber: albumStack.length + 1,
       images: [],
     };
+
     dispatch(addAlbumPage(newPage));
     handleAddImages(images);
     setCurrentPage(albumStack.length + 1);
@@ -69,6 +91,26 @@ const AlbumNavigator: React.FC<AlbumNavigatorProps> = ({
       setCurrentPage(currentPage - 1);
     }
   };
+
+  // const handleNextPage = () => {
+  //   if (currentPage < albumStack.length) {
+  //     const currentPageData = albumStack.find((page) => page.pageNumber === currentPage);
+  //     if (!currentPageData?.images.length) {
+  //       handleAddImages(images);
+  //     }
+  //     setCurrentPage(currentPage + 1);
+  //   }
+  // };
+
+  // const handlePreviousPage = () => {
+  //   if (currentPage > 1) {
+  //     const currentPageData = albumStack.find((page) => page.pageNumber === currentPage);
+  //     if (!currentPageData?.images.length) {
+  //       handleAddImages(images);
+  //     }
+  //     setCurrentPage(currentPage - 1);
+  //   }
+  // };
 
   const handleAddImages = (images: ImageProps[]) => {
     dispatch(clearImagesOnPage(currentPage));
