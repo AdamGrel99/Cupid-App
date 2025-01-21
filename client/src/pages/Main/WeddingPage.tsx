@@ -68,7 +68,6 @@ const WeddingPage: React.FC = () => {
         <Canvas
           stageRef={stageRef}
           dragUrl={dragUrl || ""}
-          currentPage={currentPage}
           handleSelect={handleSelect}
           handleDeselect={handleDeselect}
           images={images}

@@ -1,32 +1,10 @@
-import React, { RefObject } from "react";
+import React from "react";
 import CanvasField from "./CanvasField";
-
-interface ImageProps {
-  x: number;
-  y: number;
-  rotation: number;
-  height: number;
-  width: number;
-  src: string;
-  isSelected: boolean;
-  onSelect: () => void;
-  onDeselect: () => void;
-}
-
-interface CanvasProps {
-  stageRef: RefObject<any>;
-  dragUrl: string;
-  currentPage: number;
-  handleSelect: (index: number) => void;
-  handleDeselect: () => void;
-  images: ImageProps[];
-  setImages: React.Dispatch<React.SetStateAction<ImageProps[]>>;
-}
+import { CanvasProps, ImageProps } from "../../models/canvas/CanvasProps";
 
 const Canvas: React.FC<CanvasProps> = ({
   stageRef,
   dragUrl,
-  currentPage,
   handleSelect,
   handleDeselect,
   images,
@@ -64,7 +42,6 @@ const Canvas: React.FC<CanvasProps> = ({
       <CanvasField
         images={images}
         stageRef={stageRef}
-        currentPage={currentPage}
         updateImage={updateImage}
       />
     </div>

@@ -12,27 +12,10 @@ import {
   addImageToPage,
   clearImagesOnPage,
 } from "../../features/wedding/historyAlbumSlice";
-
-export interface ImageProps {
-  x: number;
-  y: number;
-  rotation: number;
-  height: number;
-  width: number;
-  src: string;
-  isSelected: boolean;
-  onSelect: () => void;
-  onDeselect: () => void;
-}
-
-interface AlbumNavigatorProps {
-  currentPage: number;
-  setCurrentPage: (pageNumber: number) => void;
-  images: ImageProps[];
-  setImages: React.Dispatch<React.SetStateAction<ImageProps[]>>;
-  handleSelect: (index: number) => void;
-  handleDeselect: () => void;
-}
+import {
+  AlbumNavigatorProps,
+  ImageProps,
+} from "../../models/canvas/CanvasProps";
 
 const AlbumNavigator: React.FC<AlbumNavigatorProps> = ({
   currentPage,
@@ -63,14 +46,6 @@ const AlbumNavigator: React.FC<AlbumNavigatorProps> = ({
     }
   }, [currentPage]);
 
-  // test
-  // console.log("Current Page");
-  // console.log(currentPage);
-  // console.log("Album");
-  // console.log(albumStack);
-  // console.log("Images");
-  // console.log(images);
-
   const handleAddPage = () => {
     const newPage = {
       pageNumber: albumStack.length + 1,
@@ -96,29 +71,9 @@ const AlbumNavigator: React.FC<AlbumNavigatorProps> = ({
     }
   };
 
-  // const handleNextPage = () => {
-  //   if (currentPage < albumStack.length) {
-  //     const currentPageData = albumStack.find((page) => page.pageNumber === currentPage);
-  //     if (!currentPageData?.images.length) {
-  //       handleAddImages(images);
-  //     }
-  //     setCurrentPage(currentPage + 1);
-  //   }
-  // };
-
-  // const handlePreviousPage = () => {
-  //   if (currentPage > 1) {
-  //     const currentPageData = albumStack.find((page) => page.pageNumber === currentPage);
-  //     if (!currentPageData?.images.length) {
-  //       handleAddImages(images);
-  //     }
-  //     setCurrentPage(currentPage - 1);
-  //   }
-  // };
-
   const handleAddImages = (images: ImageProps[]) => {
     dispatch(clearImagesOnPage(currentPage));
-    images.forEach((image, index) => {
+    images.forEach((image) => {
       const newImage = {
         src: image.src,
         x: image.x,
@@ -158,21 +113,6 @@ const AlbumNavigator: React.FC<AlbumNavigatorProps> = ({
       >
         <FontAwesomeIcon icon={faPlus} />
       </button>
-      {/* <button
-        onClick={handleRemovePage}
-        disabled={historyPageStack.length === 0}
-        className="p-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:bg-gray-300"
-      >
-        <FontAwesomeIcon icon={faX} />
-      </button> */}
-
-      {/* <button
-        onClick={handleUndo}
-        disabled={historyPageStack.length === 0}
-        className="p-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 disabled:bg-gray-300"
-      >
-        <FontAwesomeIcon icon={faRotateLeft} />
-      </button> */}
     </div>
   );
 };

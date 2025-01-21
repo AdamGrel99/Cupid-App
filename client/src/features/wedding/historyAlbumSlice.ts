@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { HistoryAlbumStack, HistoryPageStack } from '../../models/canvas/HistoryAlbumProps';
-import { ImageProps } from '../../models/canvas/ImageProps';
+import { HistoryAlbumStack, HistoryPageStack, HistoryImageProps } from '../../models/canvas/HistoryAlbumProps';
 
 const initialState: HistoryAlbumStack = {
   albumStack: [{
@@ -18,7 +17,7 @@ const historyAlbumSlice = createSlice({
     },
     addImageToPage(
       state,
-      action: PayloadAction<{ pageNumber: number; image: ImageProps }>
+      action: PayloadAction<{ pageNumber: number; image: HistoryImageProps }>
     ) {
       const page = state.albumStack.find(
         (page) => page.pageNumber === action.payload.pageNumber
