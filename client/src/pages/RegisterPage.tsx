@@ -12,19 +12,42 @@ function RegisterPage() {
     name: "",
     surname: "3",
     token: "4",
-    role: "132",
+    role: "user",
   });
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    
     e.preventDefault();
     console.log("Rejestracja:", formData);
-    // Wyślij dane do API rejestracji
+
+    try {
+      const response = await fetch("http://localhost:5000/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",  // Upewnij się, że wysyłasz JSON
+        },
+        body: JSON.stringify(formData),  // Zamiana formData na JSON
+      });
+
+      if (!response.ok) {
+        throw new Error("Błąd rejestracji: " + response.status);
+      }
+
+      const data = await response.json();
+      console.log("Rejestracja zakończona sukcesem:", data);
+    } catch (error) {
+      console.error("Błąd rejestracji:", error);
+    }
   };
+  
 
   // TODO
   // Potwierdzenie Regulaminu, Powtórz hasło.

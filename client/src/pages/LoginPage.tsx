@@ -20,10 +20,34 @@ function LoginPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Logowanie:", formData);
-    // Wyślij dane do API logowania
+  console.log("Logowanie:", formData);
+
+  try {
+    const response = await fetch("http://localhost:5000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",  // Upewnij się, że wysyłasz JSON
+      },
+      body: JSON.stringify(formData),  // Zamiana formData na JSON
+    });
+
+    if (!response.ok) {
+      throw new Error("Błąd logowania: " + response.status);
+    }
+
+    const data = await response.json();
+    console.log("Logowanie zakończone sukcesem:", data);
+
+    // Jeśli logowanie zakończone sukcesem, np. zapisz token w stanie aplikacji lub w localStorage
+    // localStorage.setItem("user_token", data.token); // Jeśli używasz tokenu
+    // Możesz także przekierować użytkownika do innej strony po udanym logowaniu
+    // history.push("/dashboard"); // Jeśli używasz react-router
+
+  } catch (error) {
+    console.error("Błąd logowania:", error);
+  }
   };
 
   return (

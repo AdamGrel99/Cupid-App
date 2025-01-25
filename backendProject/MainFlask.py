@@ -7,7 +7,8 @@ import generowanieTokenu
 import User
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173", "http://192.168.10.102:5173", "http://192.168.10.102::5173", "http://192.168.10.102::5173"]}})
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+
 
 # CORS(app)
 
@@ -23,9 +24,28 @@ def create_card():
 
     return jsonify({'location': f'/{token}/ulotka.pdf'}), 201
 
-@app.route('/api/register',methods=['POST'])
-def restister():
-    User.User.handle_registration(request.data)
+@app.route('/register', methods=['POST'])
+def register():
+    try:
+        data = request.get_json()
+        print("Otrzymane dane:", data)  # Debugowanie: wyświetlamy otrzymane dane
+
+        if not data:
+            raise ValueError("Brak danych w żądaniu")
+
+        # Sprawdźmy, co dokładnie robi handle_registration w User.py
+        user = User.User.handle_registration(data)
+
+        print("Dane użytkownika po rejestracji:", user)  # Debugowanie: wyświetlamy dane użytkownika
+        
+        return jsonify({"message": "Rejestracja zakończona sukcesem!"}), 201
+    except Exception as e:
+        print(f"Błąd w handle_registration: {str(e)}")  # Debugowanie: wyświetlamy błąd
+        return jsonify({"error": str(e)}), 500
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    return User.User.handle_login(data)
 
 @app.route('/api/foto', methods=['POST'])
 def save_photo():
@@ -38,6 +58,13 @@ def save_photo():
 
     return jsonify({'location': f'/{token}/ulotka.pdf'}), 201
 
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET,POST,OPTIONS"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
 
 
 if __name__ == '__main__':
