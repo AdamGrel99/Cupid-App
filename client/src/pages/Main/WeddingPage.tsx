@@ -4,6 +4,8 @@ import Canvas from "../../components/Canvas/Canvas";
 import ImageViewer from "../../components/ImageViewer";
 import AlbumNavigator from "../../components/Canvas/AlbumNavigator";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Import biblioteki do HTTP
+import { useSelector } from "react-redux";
 
 export interface ImageProps {
   x: number;
@@ -45,7 +47,24 @@ const WeddingPage: React.FC = () => {
   };
 
   const handleLogout = () => console.log("Log out");
-  const handleSave = () => console.log("Save");
+  const handleSave = async () => {
+    try {
+      const albumData = {
+        currentPage,
+        images, // Zakładam, że `images` jest Twoją listą zdjęć
+      };
+  
+      const response = await axios.post("http://localhost:5000/api/save-album", albumData, {
+        headers: {
+          "Content-Type": "application/json", // Ustaw właściwy typ danych
+        },
+      });
+  
+      console.log("Album zapisany pomyślnie:", response.data);
+    } catch (error) {
+      console.error("Błąd podczas zapisywania albumu:", error);
+    }
+  };
   const handleExport = (format: "pdf" | "html" | "docx") =>
     console.log(`Eksport do ${format.toUpperCase()}`);
   const handleWeddingCard = () => {

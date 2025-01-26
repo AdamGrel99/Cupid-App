@@ -5,13 +5,22 @@ import generate_qr_card
 import receive_photo
 import generowanieTokenu
 import User
+import album
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 
 # CORS(app)
+@app.route("/api/get-albums", methods=["GET"])
+def get_albums():
+    album.get_album()
 
+
+@app.route("/api/save-album", methods=["POST"])
+def save_albums():
+    album.save_album()
+    
 @app.route('/api/cardqr', methods=['POST'])
 def create_card():
     card_data = json.loads(request.data)
@@ -42,8 +51,9 @@ def register():
     except Exception as e:
         print(f"Błąd w handle_registration: {str(e)}")  # Debugowanie: wyświetlamy błąd
         return jsonify({"error": str(e)}), 500
-@app.route('/login', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 def login():
+    User.User.load_users()#przechodzi po calej liscie osob i sprawdza czy mozna sie zalogowac
     data = request.get_json()
     return User.User.handle_login(data)
 

@@ -43,6 +43,7 @@ function RegisterPage() {
 
       const data = await response.json();
       console.log("Rejestracja zakończona sukcesem:", data);
+      //przekierowanie do home
     } catch (error) {
       console.error("Błąd rejestracji:", error);
     }

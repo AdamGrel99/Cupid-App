@@ -16,8 +16,8 @@ class User:
         self.token = token
         self.role = role
 
-    def to_json(self):
-        return json.dumps(self.__dict__, ensure_ascii=False)
+    def to_dict(self):
+        return self.__dict__  # Zwraca dane jako słownik, nie JSON
     
     @staticmethod
     def handle_registration(data):
@@ -75,6 +75,7 @@ class User:
     
 
 
+    @staticmethod
     def load_users():
         # Upewnij się, że katalog dla pliku istnieje
         folder_path = os.path.dirname(USER_FILE)
@@ -89,11 +90,13 @@ class User:
         # Odczyt zawartości pliku JSON
         try:
             with open(USER_FILE, "r") as file:
-                content = file.read().strip()
-                return json.loads(content) if content else []
+                users = json.load(file)
+                return users
         except json.JSONDecodeError:
             print("Błąd dekodowania JSON! Plik mógł zostać uszkodzony.")
             return []
+
+        
     @staticmethod
     def handle_login(data):
         try:
