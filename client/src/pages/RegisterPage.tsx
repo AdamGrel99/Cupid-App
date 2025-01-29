@@ -3,7 +3,7 @@ import AuthForm from "../components/AuthForm";
 import FormInput from "../components/FormInput";
 import { User } from "../models/User";
 import BackgroundWithCupids from "../components/HomePage/BackgroundWithCupids";
-
+import { useNavigate } from "react-router-dom";
 function RegisterPage() {
   const [formData, setFormData] = useState<User>({
     id: "1",
@@ -17,7 +17,7 @@ function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const navigate = useNavigate();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -43,7 +43,7 @@ function RegisterPage() {
 
       const data = await response.json();
       console.log("Rejestracja zakończona sukcesem:", data);
-      //przekierowanie do home
+      navigate("/home")
     } catch (error) {
       console.error("Błąd rejestracji:", error);
     }

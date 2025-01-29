@@ -16,5 +16,14 @@
         "surname": "3",
         "token": "4",
         "role": "couple"
+    },
+    {
+        "id": "1",
+        "email": "def@gmail.com",
+        "password": "3",
+        "name": "Kurs Baristy",
+        "surname": "3",
+        "token": "4",
+        "role": "couple"
     }
 ]

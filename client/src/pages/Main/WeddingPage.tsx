@@ -46,7 +46,7 @@ const WeddingPage: React.FC = () => {
     );
   };
 
-  const handleLogout = () => console.log("Log out");
+  const handleLogout = () => navigate("/login");
   const handleSave = async () => {
     try {
       const albumData = {

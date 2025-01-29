@@ -17,6 +17,7 @@ function LoginPage() {
     token: "",
     role: "",
   });
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,11 +37,13 @@ function LoginPage() {
       body: JSON.stringify(formData),  // Zamiana formData na JSON
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error("Błąd logowania: " + response.status);
+      throw new Error(data.error || "Błąd logowania");
     }
 
-    const data = await response.json();
+    
     console.log("Logowanie zakończone sukcesem:", data);
 
     navigate("/home")
@@ -49,8 +52,8 @@ function LoginPage() {
     // Możesz także przekierować użytkownika do innej strony po udanym logowaniu
     // history.push("/dashboard"); // Jeśli używasz react-router
 
-  } catch (error) {
-    console.error("Błąd logowania:", error);
+  } catch (error: any) {
+    setError(error.message); // Ustawiamy błąd do wyświetlenia
   }
   };
 
@@ -82,6 +85,8 @@ function LoginPage() {
           onChange={handleInputChange}
           placeholder="Wpisz swoje hasło"
         />
+        {/* 🔴 Wyświetlanie błędu, jeśli istnieje */}
+        {error && <p className="text-red-500 mt-2">{error}</p>}
       </AuthForm>
     </header>
   );
