@@ -16,8 +16,8 @@ class User:
         self.token = token
         self.role = role
 
-    def to_dict(self):
-        return self.__dict__  # Zwraca dane jako słownik, nie JSON
+    def to_json(self):
+        return json.dumps(self.__dict__, ensure_ascii=False)
     
     @staticmethod
     def handle_registration(data):
