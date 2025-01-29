@@ -80,6 +80,8 @@ def export_album_fun():
         export_album.export_to_pdf(album_data, token)
     if(export_mode == "docx"):
         export_album.export_to_docx(album_data, token)
+    if(export_mode == "html"):
+        export_album.export_to_html(album_data, token)
 
     return jsonify({'location': f'http://localhost:5000/api/download_file/{token}/album_weselny.{export_mode}'}), 201
 

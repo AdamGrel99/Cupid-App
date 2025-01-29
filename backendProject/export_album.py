@@ -9,6 +9,8 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 import os
 from pdf2docx import Converter
+from spire.pdf.common import *
+from spire.pdf import *
 
 page_width = 3508/6
 page_height = 2480/6
@@ -68,5 +70,20 @@ def export_to_docx(history_album_stack, token):
     cv.convert(f"{token}/album_weselny.docx", start=0, end=None)
     cv.close()
     
+def export_to_html(history_album_stack, token):
+    export_to_pdf(history_album_stack, token)
+    
+    doc = PdfDocument()
+
+    doc.LoadFromFile(f"{token}/album_weselny.pdf")
+
+    convertOptions = doc.ConvertOptions
+
+    convertOptions.SetPdfToHtmlOptions(True, True, 1, True)
+
+    doc.SaveToFile(f"{token}/album_weselny.html", FileFormat.HTML)
+
+    doc.Dispose()
+        
     
     
