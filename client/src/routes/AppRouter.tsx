@@ -7,6 +7,7 @@ import EditPage from "../pages/Guest/EditPage";
 import FotoPage from "../pages/Guest/FotoPage";
 import CardQrPage from "../pages/CardQrPage";
 import WeddingPage from "../pages/Main/WeddingPage";
+import SendPage from "../pages/Guest/SendPage";
 
 export const router = createBrowserRouter([
   {
@@ -39,5 +40,9 @@ export const router = createBrowserRouter([
   {
     path: "/foto",
     element: <FotoPage />,
+  },
+  {
+    path: "/send",
+    element: <SendPage />,
   },
 ]);

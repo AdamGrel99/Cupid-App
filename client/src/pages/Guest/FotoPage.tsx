@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { NavLink, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { SentPhoto } from "../../models/SentPhoto";
 
 function FotoPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   var tokenFromUrl = searchParams.get("token");
 
   const [photoData, setFormData] = useState<SentPhoto>({
-    //useeffect
     token: "53423342",
     photoBase64: "",
   });
+
+  const [tekst, setTekst] = useState("Zrób zdjecie");
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -18,6 +19,7 @@ function FotoPage() {
       convertToBase64(selectedFile);
     }
   };
+
   const convertToBase64 = (file: File) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -34,8 +36,6 @@ function FotoPage() {
     reader.readAsDataURL(file); // Rozpoczyna konwersję
   };
 
-  const [tekst, setTekst] = useState("Tekst hellooooo");
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -45,14 +45,14 @@ function FotoPage() {
     }));
     //console.log("Rejestracja:", formData);
 
-    setTekst("posłano!");
+    setTekst("Zdjęcie wysłane!");
 
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(photoData),
     };
-    fetch("http://192.168.10.102:5000/api/send_photo", requestOptions)
+    fetch("http://192.168.1.39:5000/api/foto", requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Błąd podczas żądania: " + response.status);
@@ -68,9 +68,21 @@ function FotoPage() {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <h1 className="text-3xl font-bold underline">{tekst}</h1>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-sm bg-white p-6 rounded-lg shadow-md space-y-4"
+      >
+        <h1 className="text-2xl font-bold text-center text-gray-800">
+          {tekst}
+        </h1>
+
+        <label
+          htmlFor="picture"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Wybierz zdjęcie
+        </label>
         <input
           type="file"
           id="picture"
@@ -78,18 +90,17 @@ function FotoPage() {
           accept="image/*"
           capture="environment"
           onChange={handleFileChange}
-          // onChange={handleInputChange}
+          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <button
           type="submit"
-          className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          style={{ cursor: "pointer" }}
+          className="w-full px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          Wygeneruj ulotkę!
+          Prześlij
         </button>
       </form>
-    </>
+    </div>
   );
 }
 
