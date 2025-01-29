@@ -39,6 +39,7 @@ function LoginPage() {
 
     const data = await response.json();
     console.log("Logowanie zakończone sukcesem:", data);
+    
 
     // Jeśli logowanie zakończone sukcesem, np. zapisz token w stanie aplikacji lub w localStorage
     // localStorage.setItem("user_token", data.token); // Jeśli używasz tokenu

@@ -16,8 +16,8 @@ class User:
         self.token = token
         self.role = role
 
-    def to_json(self):
-        return json.dumps(self.__dict__, ensure_ascii=False)
+    def to_dict(self):
+        return self.__dict__
     
     @staticmethod
     def handle_registration(data):
@@ -56,16 +56,16 @@ class User:
             print("Odczytani użytkownicy:", users)
 
             # Dodajemy nowego użytkownika do listy
-            users.append(user.to_json())
+            users.append(user.to_dict())
 
             # Zapisujemy dane użytkowników do pliku
             with open(USER_FILE, "w") as file:
                 json.dump(users, file, ensure_ascii=False, indent=4)
 
-            print("Zapisano użytkownika:", user.to_json())  # Debugowanie: wyświetlamy zapisane dane
+            print("Zapisano użytkownika:", user.to_dict())  # Debugowanie: wyświetlamy zapisane dane
 
             # Zwracamy odpowiedź JSON z danymi użytkownika
-            return jsonify({"message": "Rejestracja zakończona sukcesem!", "user": user.to_json()}), 201
+            return jsonify({"message": "Rejestracja zakończona sukcesem!", "user": user.to_dict()}), 201
 
         except Exception as e:
             print(f"Błąd w handle_registration: {str(e)}")  # Debugowanie błędu
@@ -84,7 +84,17 @@ class User:
 
         try:
             with open(USER_FILE, "r") as file:
-                return json.load(file)
+                data = json.load(file)
+                print (data)
+                print("check")
+                if isinstance(data, str):  # Jeśli to string, parsujemy jeszcze raz
+                    data = json.loads(data)
+                    print (data)
+                if not isinstance(data, list):  # Jeśli to nie lista, coś jest źle
+                    print("Błędny format JSON! Resetowanie pliku.")
+                    return []
+
+                return data
         except json.JSONDecodeError:
             print("Błąd dekodowania JSON! Plik mógł zostać uszkodzony.")
             return []
@@ -95,25 +105,25 @@ class User:
         try:
             email = data.get("email")
             password = data.get("password")
-
             if not email or not password:
                 raise ValueError("Email i hasło są wymagane")
 
             users = User.load_users()
-
             # 🔍 Szukamy użytkownika pętlą for
             found_user = None
             for user in users:
                 if user["email"] == email:
+                    print(user["email"])
                     found_user = user
-                    break  # Przerywamy pętlę, jeśli znaleziono użytkownika
-
+                    print(found_user)
+                    # Przerywamy pętlę, jeśli znaleziono użytkownika
+            print("check1")            
             if not found_user:
                 raise ValueError("Nie znaleziono użytkownika o podanym emailu")
-
+            print("check2") 
             if found_user["password"] != password:
                 raise ValueError("Nieprawidłowe hasło")
-
+            print("check3") 
             return jsonify({"message": "Logowanie zakończone sukcesem!", "user": found_user}), 200
 
         except Exception as e:

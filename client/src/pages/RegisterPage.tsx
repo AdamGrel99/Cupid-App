@@ -12,7 +12,7 @@ function RegisterPage() {
     name: "",
     surname: "3",
     token: "4",
-    role: "user",
+    role: "couple",
   });
   const [confirmPassword, setConfirmPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);

@@ -1,3 +1,11 @@
 [
-    "{\"id\": \"1\", \"email\": \"mateusz.lis1304@gmail.com\", \"password\": \"1520\", \"name\": \"Mateusz\", \"surname\": \"3\", \"token\": \"4\", \"role\": \"user\"}"
+    {
+        "id": "1",
+        "email": "mateusz.lis1304@gmail.com",
+        "password": "111",
+        "name": "Mateusz",
+        "surname": "3",
+        "token": "4",
+        "role": "user"
+    }
 ]

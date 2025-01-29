@@ -8,7 +8,7 @@ import User
 import album
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+CORS(app)
 
 
 # CORS(app)
@@ -51,7 +51,7 @@ def register():
     except Exception as e:
         print(f"Błąd w handle_registration: {str(e)}")  # Debugowanie: wyświetlamy błąd
         return jsonify({"error": str(e)}), 500
-@app.route('/api/login', methods=['POST'])
+@app.route('/login', methods=['POST'])
 def login():
     return User.User.handle_login(request.json)
 
