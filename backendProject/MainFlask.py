@@ -1,9 +1,12 @@
-from flask import Flask, request, jsonify, Response
+import glob
+import os
+from flask import Flask, request, jsonify, Response, send_from_directory
 from flask_cors import CORS
 import json
 import generate_qr_card
 import receive_photo
 import generowanieTokenu
+import export_album
 import User
 import album
 
@@ -65,6 +68,41 @@ def save_photo():
     token = photo_data["token"]
 
     return jsonify({'location': f'/{token}/ulotka.pdf'}), 201
+
+@app.route('/api/export_album', methods=['POST'])
+def export_album_fun():
+    album_data = json.loads(request.data)
+
+    export_mode = request.args.get('export_mode', None)
+    token = request.args.get('token', None)
+    
+    if(export_mode == "pdf"):
+        export_album.export_to_pdf(album_data, token)
+    if(export_mode == "docx"):
+        export_album.export_to_docx(album_data, token)
+
+    return jsonify({'location': f'http://localhost:5000/api/download_file/{token}/album_weselny.{export_mode}'}), 201
+
+@app.route('/api/get_photo_list', methods=['GET'])
+def get_photo_list():
+    token = request.args.get('token', None)
+    print(token)
+    
+    photos_found = os.listdir(token)
+    
+    data_to_return = list()
+    
+    for file in photos_found:
+        if file.endswith(".jpg"):
+            data_to_return.append({"download_url": f"http://localhost:5000/api/download_file/{token}/{file}"})
+    
+    return jsonify(data_to_return), 201
+
+
+@app.route('/api/download_file/<path:filename>')
+def download_file(filename):
+    return send_from_directory('', filename, as_attachment=True)
+
 
 @app.after_request
 def add_cors_headers(response):

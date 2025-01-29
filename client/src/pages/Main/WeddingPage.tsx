@@ -6,6 +6,7 @@ import AlbumNavigator from "../../components/Canvas/AlbumNavigator";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import biblioteki do HTTP
 import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 export interface ImageProps {
   x: number;
@@ -65,8 +66,54 @@ const WeddingPage: React.FC = () => {
       console.error("Błąd podczas zapisywania albumu:", error);
     }
   };
-  const handleExport = (format: "pdf" | "html" | "docx") =>
+
+  
+  const album_export_data = useSelector(
+    (state: RootState) => state.historyAlbum.albumStack
+    );
+
+  const handleExport = async (format: "pdf" | "html" | "docx") =>
+  {
+    
+
     console.log(`Eksport do ${format.toUpperCase()}`);
+    
+    console.log(album_export_data);
+    try {
+      
+      
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(album_export_data),
+      };
+      console.log(requestOptions.body);
+      
+      fetch(`http://localhost:5000/api/export_album?token=53423342&export_mode=${ format }`, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Błąd podczas żądania: " + response.status);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Lokacja: ", data.location); 
+        const a = document.createElement("a");
+        a.href = data.location;
+        a.download = `album_weselny.${format}`; // Pobieramy nazwę pliku
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      });
+    }
+
+    catch (error) {
+      console.error("Błąd podczas eksportowania albumu:", error);
+    }
+
+    
+  }
+
   const handleWeddingCard = () => {
     navigate("/cardqr");
   };

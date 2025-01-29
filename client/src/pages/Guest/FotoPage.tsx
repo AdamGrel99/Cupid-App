@@ -52,7 +52,8 @@ function FotoPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(photoData),
     };
-    fetch("http://localhost:5000/api/foto", requestOptions)
+    
+    fetch("http://192.168.100.12:5000/api/foto", requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Błąd podczas żądania: " + response.status);

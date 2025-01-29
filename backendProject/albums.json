@@ -52,5 +52,79 @@
                 "rotation": -70.27870099647178
             }
         ]
+    },
+    {
+        "currentPage": 1,
+        "images": [
+            {
+                "src": "https://picsum.photos/id/0/5000/3333",
+                "x": 190.58058298974413,
+                "y": 81.14061192169616,
+                "width": 1207.5514267646593,
+                "height": 1746.5037189468005,
+                "rotation": 0,
+                "isSelected": false
+            },
+            {
+                "src": "https://picsum.photos/id/11/2500/1667",
+                "x": 1412.193292406005,
+                "y": 792.9834674441585,
+                "width": 1691.8652822227384,
+                "height": 1128.1357701861225,
+                "rotation": 0,
+                "isSelected": false
+            },
+            {
+                "src": "https://picsum.photos/id/15/2500/1667",
+                "x": 1795.3028369285637,
+                "y": 1247.8677451469532,
+                "width": 1309.7561193478866,
+                "height": 873.3453803811706,
+                "rotation": 0,
+                "isSelected": false
+            }
+        ]
+    },
+    {
+        "currentPage": 1,
+        "images": [
+            {
+                "src": "https://picsum.photos/id/0/5000/3333",
+                "x": 190.58058298974413,
+                "y": 81.14061192169616,
+                "width": 1207.5514267646593,
+                "height": 1746.5037189468005,
+                "rotation": 0,
+                "isSelected": false
+            },
+            {
+                "src": "https://picsum.photos/id/11/2500/1667",
+                "x": 1412.193292406005,
+                "y": 792.9834674441585,
+                "width": 1691.8652822227384,
+                "height": 1128.1357701861225,
+                "rotation": 0,
+                "isSelected": false
+            },
+            {
+                "src": "https://picsum.photos/id/15/2500/1667",
+                "x": 1795.3028369285637,
+                "y": 1247.8677451469532,
+                "width": 1309.7561193478866,
+                "height": 873.3453803811706,
+                "rotation": 0,
+                "isSelected": false
+            }
+        ]
+    },
+    {
+        "currentPage": 4,
+        "images": [
+            {
+                "x": 455.75199535385383,
+                "y": 206.0967045347855,
+                "src": "http://localhost:5000/api/download_photo/53423342/2024-12-12_16-34-09.jpg"
+            }
+        ]
     }
 ]

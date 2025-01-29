@@ -44,6 +44,12 @@ function CardQrPage() {
       })
       .then((data) => {
         console.log("Lokacja: ", data.location);
+        const a = document.createElement("a");
+        a.href = data.location;
+        a.download = `album_weselny.pdf`; // Pobieramy nazwę pliku
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       })
       .catch((error) => console.error("Błąd: ", error));
   };

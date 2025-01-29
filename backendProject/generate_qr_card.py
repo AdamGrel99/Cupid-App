@@ -9,6 +9,9 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 import os
 
+page_width = 210
+page_height = 297
+
 pdfmetrics.registerFont(TTFont('Imperial', 'ImperialScript-Regular.ttf'))
 
 def getCalled(data):

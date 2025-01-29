@@ -10,8 +10,8 @@ const ImageViewer: React.FC<ImageViewerProps> = ({ onImageDrag }) => {
 
   const fetchImages = async () => {
     setLoading(true);
-    try {
-      const response = await fetch("https://picsum.photos/v2/list");
+    try {//https://picsum.photos/v2/list
+      const response = await fetch("http://localhost:5000/api/get_photo_list?token=53423342"); // backend tutaj 
       const data = await response.json();
       const imageUrls = data.map((image: any) => image.download_url);
       setImages(imageUrls);
@@ -21,6 +21,9 @@ const ImageViewer: React.FC<ImageViewerProps> = ({ onImageDrag }) => {
       setLoading(false);
     }
   };
+
+
+// {"download_url":"https://picsum.photos/id/0/5000/3333"}
 
   useEffect(() => {
     fetchImages();
