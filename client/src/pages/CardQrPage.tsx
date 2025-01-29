@@ -31,7 +31,7 @@ function CardQrPage() {
     e.preventDefault();
     console.log("Rejestracja:", formData);
 
-    fetch("http://192.168.1.39:5000/api/cardqr", {
+    fetch("http://localhost:5000/api/cardqr", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),

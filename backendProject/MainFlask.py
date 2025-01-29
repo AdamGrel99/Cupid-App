@@ -61,7 +61,7 @@ def login():
 def save_photo():
     photo_data = json.loads(request.data)
 
-    generate_qr_card.getCalled(photo_data)
+    # generate_qr_card.getCalled(photo_data)
     receive_photo.receivePhoto(photo_data)
 
     token = photo_data["token"]
