@@ -77,50 +77,44 @@ class User:
 
     @staticmethod
     def load_users():
-        # Upewnij się, że katalog dla pliku istnieje
-        folder_path = os.path.dirname(USER_FILE)
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
-
-        # Sprawdź, czy plik istnieje, jeśli nie, utwórz go z pustą listą
+        """Wczytuje użytkowników z pliku JSON."""
         if not os.path.exists(USER_FILE):
             with open(USER_FILE, "w") as file:
                 json.dump([], file)
 
-        # Odczyt zawartości pliku JSON
         try:
             with open(USER_FILE, "r") as file:
-                users = json.load(file)
-                return users
+                return json.load(file)
         except json.JSONDecodeError:
             print("Błąd dekodowania JSON! Plik mógł zostać uszkodzony.")
             return []
 
-        
     @staticmethod
     def handle_login(data):
+        """Obsługa logowania użytkownika - używa pętli do wyszukiwania."""
         try:
             email = data.get("email")
             password = data.get("password")
 
             if not email or not password:
-                raise ValueError("Email i hasło są wymagane do logowania")
+                raise ValueError("Email i hasło są wymagane")
 
-            # Wczytujemy użytkowników z pliku
             users = User.load_users()
 
-            # Szukamy użytkownika po emailu
-            user = next((user for user in users if user["email"] == email), None)
+            # 🔍 Szukamy użytkownika pętlą for
+            found_user = None
+            for user in users:
+                if user["email"] == email:
+                    found_user = user
+                    break  # Przerywamy pętlę, jeśli znaleziono użytkownika
 
-            if not user:
+            if not found_user:
                 raise ValueError("Nie znaleziono użytkownika o podanym emailu")
 
-            # Sprawdzamy, czy hasło się zgadza
-            if user["password"] != password:
+            if found_user["password"] != password:
                 raise ValueError("Nieprawidłowe hasło")
 
-            # Jeśli hasło się zgadza, zwracamy dane użytkownika (można dodać token, jeśli trzeba)
-            return jsonify({"message": "Logowanie zakończone sukcesem!", "user": user}), 200
+            return jsonify({"message": "Logowanie zakończone sukcesem!", "user": found_user}), 200
 
         except Exception as e:
             return jsonify({"error": str(e)}), 400

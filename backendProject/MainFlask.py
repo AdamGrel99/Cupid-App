@@ -53,9 +53,7 @@ def register():
         return jsonify({"error": str(e)}), 500
 @app.route('/api/login', methods=['POST'])
 def login():
-    User.User.load_users()#przechodzi po calej liscie osob i sprawdza czy mozna sie zalogowac
-    data = request.get_json()
-    return User.User.handle_login(data)
+    return User.User.handle_login(request.json)
 
 @app.route('/api/foto', methods=['POST'])
 def save_photo():
