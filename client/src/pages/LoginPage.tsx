@@ -3,6 +3,9 @@ import AuthForm from "../components/AuthForm";
 import FormInput from "../components/FormInput";
 import { User } from "../models/User";
 import BackgroundWithCupids from "../components/HomePage/BackgroundWithCupids";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 function LoginPage() {
   const [formData, setFormData] = useState<User>({
@@ -14,7 +17,7 @@ function LoginPage() {
     token: "",
     role: "",
   });
-
+  const navigate = useNavigate();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -39,8 +42,8 @@ function LoginPage() {
 
     const data = await response.json();
     console.log("Logowanie zakończone sukcesem:", data);
-    
 
+    navigate("/home")
     // Jeśli logowanie zakończone sukcesem, np. zapisz token w stanie aplikacji lub w localStorage
     // localStorage.setItem("user_token", data.token); // Jeśli używasz tokenu
     // Możesz także przekierować użytkownika do innej strony po udanym logowaniu
