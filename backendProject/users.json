@@ -1,4 +1,5 @@
 [
     "{\"id\": \"1\", \"email\": \"mateusz.lis1304@gmail.com\", \"password\": \"156\", \"name\": \"mat\", \"surname\": \"3\", \"token\": \"4\", \"role\": \"user\"}",
-    "{\"id\": \"1\", \"email\": \"mateusz.lis1304@gmail.com\", \"password\": \"156\", \"name\": \"mat\", \"surname\": \"3\", \"token\": \"4\", \"role\": \"user\"}"
+    "{\"id\": \"1\", \"email\": \"mateusz.lis1304@gmail.com\", \"password\": \"156\", \"name\": \"mat\", \"surname\": \"3\", \"token\": \"4\", \"role\": \"user\"}",
+    "{\"id\": \"1\", \"email\": \"mateusz.lis1304@gmail.com\", \"password\": \"123\", \"name\": \"Kurs Baristy\", \"surname\": \"3\", \"token\": \"4\", \"role\": \"user\"}"
 ]
